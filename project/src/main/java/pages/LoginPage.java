@@ -4,6 +4,8 @@ import core.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class LoginPage extends BasePage<LoginPage> {
@@ -27,7 +29,7 @@ public class LoginPage extends BasePage<LoginPage> {
 
     /* Split and skip first element is because of dom structure.
      * First element is `Accepted usernames are:` text */
-    public String selectRandomCorrectUsername() {
+    public String getRandomCorrectUsername() {
         var usernames = getText(loginCredentials);
         Random rand = new Random();
         String[] usernamesSplit = usernames.split("\n");
@@ -35,12 +37,21 @@ public class LoginPage extends BasePage<LoginPage> {
         return usernamesSplit[usernameIndex];
     }
 
-    public String selectRandomIncorrectUsername() {
-        var correctUsername = selectRandomCorrectUsername();
+    public List<String> getCorrectUsernames() {
+        var usernames = getText(loginCredentials);
+        var usernamesSplit = usernames.split("\n");
+        return Arrays.stream(usernamesSplit)
+                .toList()
+                .subList(0, usernamesSplit.length - 1);
+    }
+
+    public String getRandomIncorrectUsername() {
+        var correctUsername = getRandomCorrectUsername();
         return correctUsername + ".";
     }
-    public String selectRandomCorrectUsernameUPPERCASE(){
-        var correctUsername = selectRandomCorrectUsername();
+
+    public String getRandomCorrectUsernameUPPERCASE() {
+        var correctUsername = getRandomCorrectUsername();
         return correctUsername.toUpperCase();
     }
 
@@ -63,7 +74,7 @@ public class LoginPage extends BasePage<LoginPage> {
     }
 
     public LoginPage loginHappyPath() {
-        writeUsername(selectRandomCorrectUsername());
+        writeUsername(getRandomCorrectUsername());
         writePassword(getCorrectPassword());
         clickLoginButton();
         return this;
@@ -76,6 +87,18 @@ public class LoginPage extends BasePage<LoginPage> {
     public LoginPage clickLoginButton() {
         waitUntilElementPresence(loginButton).scrollToElementSmooth(loginButton).click(loginButton);
         return this;
+    }
+
+    public boolean isUserNameFieldVisible() {
+        return isVisible(usernameField);
+    }
+
+    public boolean isPasswordFieldVisible() {
+        return isVisible(passwordField);
+    }
+
+    public boolean isLoginButtonVisible() {
+        return isVisible(loginButton);
     }
 
 

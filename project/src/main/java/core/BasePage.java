@@ -144,4 +144,17 @@ public abstract class BasePage<T extends BasePage<T>> {
         return (T) this;
     }
 
+    protected boolean isVisible(By locator) {
+        return findElementVisibility(locator).isDisplayed();
+    }
+    protected boolean isEnabled(By locator) {
+        return findElementVisibility(locator).isEnabled();
+    }
+    protected boolean isSelected(By locator) {
+        return findElementVisibility(locator).isSelected();
+    }
+    protected boolean isExists(By locator) {
+        return findElementPresence(locator).isDisplayed();
+    }
+
 }
