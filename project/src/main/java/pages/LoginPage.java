@@ -3,6 +3,7 @@ package pages;
 import core.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import utils.CredentialsUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,9 +46,8 @@ public class LoginPage extends BasePage<LoginPage> {
                 .subList(0, usernamesSplit.length - 1);
     }
 
-    public String getRandomIncorrectUsername() {
-        var correctUsername = getRandomCorrectUsername();
-        return correctUsername + ".";
+    public String getRandomCredential(int length) {
+        return CredentialsUtils.getPassword(length);
     }
 
     public String getRandomCorrectUsernameUPPERCASE() {
@@ -81,11 +81,11 @@ public class LoginPage extends BasePage<LoginPage> {
     }
 
     public String getErrorMessage() {
-        return findElementPresence(errorMessage).getText();
+        return getText(errorMessage).toLowerCase();
     }
 
     public LoginPage clickLoginButton() {
-        waitUntilElementPresence(loginButton).scrollToElementSmooth(loginButton).click(loginButton);
+        click(loginButton);
         return this;
     }
 

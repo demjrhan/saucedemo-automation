@@ -62,6 +62,7 @@ public abstract class BasePage<T extends BasePage<T>> {
     }
 
     protected T click(By locator) {
+        scrollToElementSmooth(locator);
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
         return (T) this;
     }
@@ -120,7 +121,7 @@ public abstract class BasePage<T extends BasePage<T>> {
     }
 
     protected String getText(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText().trim();
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator)).getText().trim();
     }
 
     protected String getTextInside(WebElement parent, By childLocator) {
