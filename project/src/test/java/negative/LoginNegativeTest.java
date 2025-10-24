@@ -16,8 +16,8 @@ public class LoginNegativeTest extends BaseTest {
     @Description("Trying to log in without username and password should cause error..")
     public void emptyCredentialsCausesError() {
         var result = loginPage.open()
-                .clickLoginButton()
-                .getErrorMessage();
+                    .clickLoginButtonRaw()
+                    .getErrorMessage();
 
         Assert.assertFalse(result.isEmpty(), "Error message should not be empty.");
     }
@@ -29,7 +29,7 @@ public class LoginNegativeTest extends BaseTest {
     public void emptyPasswordFieldCausesError() {
         var result = loginPage.open()
                 .writePassword(loginPage.getCorrectPassword())
-                .clickLoginButton()
+                .clickLoginButtonRaw()
                 .getErrorMessage();
 
         Assert.assertFalse(result.isEmpty(), "Error message should not be empty.");
@@ -42,7 +42,7 @@ public class LoginNegativeTest extends BaseTest {
     public void emptyUsernameFieldCausesError() {
         var result = loginPage.open()
                 .writeUsername(loginPage.getRandomCorrectUsername())
-                .clickLoginButton()
+                .clickLoginButtonRaw()
                 .getErrorMessage();
 
         Assert.assertFalse(result.isEmpty(), "Error message should not be empty.");
@@ -56,7 +56,7 @@ public class LoginNegativeTest extends BaseTest {
         var result = loginPage.open()
                 .writeUsername(loginPage.getRandomCorrectUsername())
                 .writePassword(loginPage.getRandomCredential(5))
-                .clickLoginButton()
+                .clickLoginButtonRaw()
                 .getErrorMessage();
 
         Assert.assertTrue(result.contains("password"), "Error message should not be empty.");
@@ -70,7 +70,7 @@ public class LoginNegativeTest extends BaseTest {
         var result = loginPage.open()
                 .writeUsername(loginPage.getRandomCredential(5))
                 .writePassword(loginPage.getCorrectPassword())
-                .clickLoginButton()
+                .clickLoginButtonRaw()
                 .getErrorMessage();
 
         Assert.assertTrue(result.contains("username"), "Error message should not be empty.");

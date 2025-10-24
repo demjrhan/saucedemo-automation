@@ -18,6 +18,8 @@ public class LoginPage extends BasePage<LoginPage> {
     private By passwordCredentials = By.cssSelector("[data-test='login-password']");
     private By errorMessage = By.cssSelector("[data-test='error']");
 
+    private By inventoryContainer = By.id("inventory_container");
+
     public LoginPage(WebDriver driver) {
         super(driver);
     }
@@ -43,7 +45,13 @@ public class LoginPage extends BasePage<LoginPage> {
         var usernamesSplit = usernames.split("\n");
         return Arrays.stream(usernamesSplit)
                 .toList()
-                .subList(0, usernamesSplit.length - 1);
+                .subList(1, usernamesSplit.length);
+    }
+
+    public String getCorrectUsername(){
+        var usernames = getText(loginCredentials);
+        var usernamesSplit = usernames.split("\n");
+        return usernamesSplit[1];
     }
 
     public String getRandomCredential(int length) {
@@ -58,7 +66,7 @@ public class LoginPage extends BasePage<LoginPage> {
     /* Split and last element access is because of dom structure.
      * First element is `Password for all users:` text */
     public String getCorrectPassword() {
-        var password = getText(loginCredentials);
+        var password = getText(passwordCredentials);
         String[] passwordSplit = password.split("\n");
         return passwordSplit[passwordSplit.length - 1];
     }
@@ -73,20 +81,23 @@ public class LoginPage extends BasePage<LoginPage> {
         return this;
     }
 
-    public LoginPage loginHappyPath() {
-        writeUsername(getRandomCorrectUsername());
+    public HomePage loginHappyPath() {
+        writeUsername(getCorrectUsername());
         writePassword(getCorrectPassword());
-        clickLoginButton();
-        return this;
+        return clickLoginButtonExpectingSuccess();
     }
 
-    public String getErrorMessage() {
-        return getText(errorMessage).toLowerCase();
+    public HomePage clickLoginButtonExpectingSuccess() {
+        click(loginButton);
+        waitUntilElementPresence(inventoryContainer);
+        return new HomePage(driver);
     }
-
-    public LoginPage clickLoginButton() {
+    public LoginPage clickLoginButtonRaw() {
         click(loginButton);
         return this;
+    }
+    public String getErrorMessage() {
+        return getText(errorMessage).toLowerCase();
     }
 
     public boolean isUserNameFieldVisible() {

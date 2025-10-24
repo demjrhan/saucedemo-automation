@@ -17,7 +17,7 @@ public class LoginPositiveTest extends BaseTest {
     public void correctPasswordDoesntCauseError() {
         var result = loginPage.open()
                 .writePassword(loginPage.getCorrectPassword())
-                .clickLoginButton()
+                .clickLoginButtonRaw()
                 .getErrorMessage();
 
         Assert.assertFalse(result.contains("password"), "Error message should not be empty.");
@@ -30,9 +30,22 @@ public class LoginPositiveTest extends BaseTest {
     public void correctUsernameDoesntCauseError() {
         var result = loginPage.open()
                 .writeUsername(loginPage.getRandomCorrectUsername())
-                .clickLoginButton()
+                .clickLoginButtonRaw()
                 .getErrorMessage();
 
         Assert.assertFalse(result.contains("username"), "Error message should not be empty.");
+    }
+
+    @Test(groups = "positive")
+    @Story("Login functionality")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Correct username and password logins correctly.")
+    public void correctPasswordAndCorrectUsernameLogins(){
+        var result = loginPage.open()
+                .writeUsername(loginPage.getRandomCorrectUsername())
+                .writePassword(loginPage.getCorrectPassword())
+                .clickLoginButtonExpectingSuccess();
+
+        Assert.assertTrue(result.atHomePage(), "Should be in home page.");
     }
 }

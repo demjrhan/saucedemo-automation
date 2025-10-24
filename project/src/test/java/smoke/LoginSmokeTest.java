@@ -45,7 +45,6 @@ public class LoginSmokeTest extends BaseTest {
     }
 
 
-
     @Test(groups = "smoke")
     @Story("Login functionality")
     @Severity(SeverityLevel.NORMAL)
