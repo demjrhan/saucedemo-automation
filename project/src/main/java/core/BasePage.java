@@ -67,6 +67,13 @@ public abstract class BasePage<T extends BasePage<T>> {
         return (T) this;
     }
 
+    protected T dragAndDrop(By from, By to) {
+        var fromElement = findElementVisibility(from);
+        var toElement = findElementVisibility(to);
+        actions.dragAndDrop(fromElement, toElement).release().perform();
+        return (T) this;
+    }
+
     protected WebElement findElementPresence(By locator) {
         return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
