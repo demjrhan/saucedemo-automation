@@ -16,6 +16,7 @@ public class BaseTest {
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized",
+                "--incognito",
                 "--disable-notifications",
                 "--disable-popup-blocking",
                 "--disable-blink-features=AutomationControlled",
@@ -25,7 +26,8 @@ public class BaseTest {
                 "--disable-extensions",
                 "--disable-web-security",
                 "--silent",
-                "--log-level=3");
+                "--log-level=3",
+                "--disable-features=PasswordLeakDetection,PasswordManagerEnabled");
         driver = new ChromeDriver(options);
     }
 

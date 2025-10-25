@@ -66,6 +66,11 @@ public abstract class BasePage<T extends BasePage<T>> {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
         return (T) this;
     }
+    protected T click(WebElement element) {
+        scrollToElementSmooth(element);
+        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+        return (T) this;
+    }
 
     protected T dragAndDrop(By from, By to) {
         var fromElement = findElementVisibility(from);

@@ -7,6 +7,7 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.LoginPage;
 
 public class HomePageSmokeTest extends BaseTest {
 
@@ -15,8 +16,12 @@ public class HomePageSmokeTest extends BaseTest {
     @Story("Home functionality")
     @Severity(SeverityLevel.NORMAL)
     @Description("Product list should have at least one product.")
-    public void thereMustBeAtLeastOneProduct(){
-        var result = loginPage.open().loginHappyPath().getProducts();
+    public void thereMustBeAtLeastOneProduct() {
+        var loginPage = new LoginPage(driver);
+
+        var result = loginPage.open()
+                .loginHappyPath()
+                .getProducts();
         Assert.assertFalse(result.isEmpty(), "There should be at least one product");
     }
 
@@ -24,8 +29,11 @@ public class HomePageSmokeTest extends BaseTest {
     @Story("Home functionality")
     @Severity(SeverityLevel.NORMAL)
     @Description("Product has a image.")
-    public void productShouldHaveImage(){
-        var homePage = loginPage.open().loginHappyPath();
+    public void productShouldHaveImage() {
+        var loginPage = new LoginPage(driver);
+
+        var homePage = loginPage.open()
+                .loginHappyPath();
         var firstProduct = homePage.getFirstProduct();
         var result = homePage.productHasImage(firstProduct);
 
@@ -35,9 +43,12 @@ public class HomePageSmokeTest extends BaseTest {
     @Test(groups = "smoke")
     @Story("Home functionality")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Product has a description.")
-    public void productShouldHaveDescription(){
-        var homePage = loginPage.open().loginHappyPath();
+    @Description("First product should have a description.")
+    public void firstProductShouldHaveDescription() {
+        var loginPage = new LoginPage(driver);
+
+        var homePage = loginPage.open()
+                .loginHappyPath();
         var firstProduct = homePage.getFirstProduct();
         var result = homePage.productHasDescription(firstProduct);
 
@@ -47,12 +58,55 @@ public class HomePageSmokeTest extends BaseTest {
     @Test(groups = "smoke")
     @Story("Home functionality")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Products description is longer than 5 character.")
-    public void productsDescriptionShouldBeLongerThan5Characters(){
-        var homePage = loginPage.open().loginHappyPath();
+    @Description("First product description is longer than 5 character.")
+    public void firstProductDescriptionShouldBeLongerThan5Characters() {
+        var loginPage = new LoginPage(driver);
+
+        var homePage = loginPage.open()
+                .loginHappyPath();
         var firstProduct = homePage.getFirstProduct();
         var result = homePage.getProductDescription(firstProduct);
 
         Assert.assertTrue(result.length() > 5, firstProduct + " should have at least 5 character long description.");
+    }
+
+    @Test(groups = "smoke")
+    @Story("Home functionality")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Every product should have a description.")
+    public void everyProductShouldHaveDescription() {
+        var loginPage = new LoginPage(driver);
+
+        var homePage = loginPage.open()
+                .loginHappyPath();
+        homePage.getProducts().forEach(product -> {
+            Assert.assertFalse(homePage.getProductDescription(product).isEmpty(), product + " should have an description.");
+        });
+    }
+
+    @Test(groups = "smoke")
+    @Story("Home functionality")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Every product has add to cart button.")
+    public void addToCartButtonExistsForAllProducts() {
+        var loginPage = new LoginPage(driver);
+
+        var homePage = loginPage.open()
+                .loginHappyPath();
+        homePage.getProducts().forEach(product -> {
+            Assert.assertFalse(homePage.isProductHasAddToCart(product), product + " should have an description.");
+        });
+    }
+
+    @Test(groups = "smoke")
+    @Story("Home functionality")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Add to cart button works for products.")
+    public void clickingAddToCartButtonWorks() {
+        var loginPage = new LoginPage(driver);
+
+        var homePage = loginPage.open()
+                .loginHappyPath();
+        homePage.getProducts().forEach(homePage::clickAddToCartButton);
     }
 }
