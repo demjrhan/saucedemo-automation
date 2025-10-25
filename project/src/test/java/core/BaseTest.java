@@ -27,7 +27,6 @@ public class BaseTest {
                 "--silent",
                 "--log-level=3");
         driver = new ChromeDriver(options);
-        loginPage = new LoginPage(driver);
     }
 
     @AfterMethod(alwaysRun = true)

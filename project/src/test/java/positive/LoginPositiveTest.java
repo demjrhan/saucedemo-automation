@@ -7,6 +7,8 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.LoginPage;
+import utils.DataProviders;
 
 public class LoginPositiveTest extends BaseTest {
 
@@ -15,6 +17,7 @@ public class LoginPositiveTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Correct password doesn't create error message.")
     public void correctPasswordDoesntCauseError() {
+        var loginPage = new LoginPage(driver);
         var result = loginPage.open()
                 .writePassword(loginPage.getCorrectPassword())
                 .clickLoginButtonRaw()
@@ -28,6 +31,7 @@ public class LoginPositiveTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Correct username doesn't create error message.")
     public void correctUsernameDoesntCauseError() {
+        var loginPage = new LoginPage(driver);
         var result = loginPage.open()
                 .writeUsername(loginPage.getRandomCorrectUsername())
                 .clickLoginButtonRaw()
@@ -41,9 +45,25 @@ public class LoginPositiveTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Correct username and password logins correctly.")
     public void correctPasswordAndCorrectUsernameLogins(){
+        var loginPage = new LoginPage(driver);
         var result = loginPage.open()
                 .writeUsername(loginPage.getRandomCorrectUsername())
                 .writePassword(loginPage.getCorrectPassword())
+                .clickLoginButtonExpectingSuccess();
+
+        Assert.assertTrue(result.atHomePage(), "Should be in home page.");
+    }
+
+
+    @Test(dataProvider = "credentials", dataProviderClass = DataProviders.class ,groups = "positive")
+    @Story("Login functionality")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Correct username and password from data provider should work correctly.")
+    public void correctUsernameAndPasswordFromDataProvider(String username, String password){
+        var loginPage = new LoginPage(driver);
+        var result = loginPage.open()
+                .writeUsername(username)
+                .writePassword(password)
                 .clickLoginButtonExpectingSuccess();
 
         Assert.assertTrue(result.atHomePage(), "Should be in home page.");

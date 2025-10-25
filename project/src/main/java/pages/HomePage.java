@@ -9,7 +9,7 @@ import java.util.List;
 
 public class HomePage extends BasePage<HomePage> {
 
-    private By inventoryContainer = By.id("inventory_list");
+    private By inventoryContainer = By.className("inventory_list");
     private By firstProduct = By.cssSelector(".inventory_list:nth-child(1)");
 
     public HomePage(WebDriver driver) {

@@ -7,6 +7,7 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.LoginPage;
 
 public class LoginSmokeTest extends BaseTest {
 
@@ -16,6 +17,7 @@ public class LoginSmokeTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify that username field is visible.")
     public void usernameFieldExists() {
+        var loginPage = new LoginPage(driver);
         var result = loginPage.open()
                 .isUserNameFieldVisible();
 
@@ -27,6 +29,7 @@ public class LoginSmokeTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify that password field is visible.")
     public void passwordFieldExists() {
+        var loginPage = new LoginPage(driver);
         var result = loginPage.open()
                 .isPasswordFieldVisible();
 
@@ -38,6 +41,7 @@ public class LoginSmokeTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify that login button is visible.")
     public void loginButtonExists() {
+        var loginPage = new LoginPage(driver);
         var result = loginPage.open()
                 .isLoginButtonVisible();
 
@@ -50,6 +54,7 @@ public class LoginSmokeTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Website should provide at least 1 correct username.")
     public void getCorrectUsernames() {
+        var loginPage = new LoginPage(driver);
         var result = loginPage.open()
                         .getCorrectUsernames();
 
@@ -60,6 +65,7 @@ public class LoginSmokeTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Website should provide at least 1 correct password.")
     public void getCorrectPasswords() {
+        var loginPage = new LoginPage(driver);
         var result = loginPage.open()
                 .getCorrectPassword();
 
