@@ -94,7 +94,7 @@ public class HomePageSmokeTest extends BaseTest {
         var homePage = loginPage.open()
                 .loginHappyPath();
         homePage.getProducts().forEach(product -> {
-            Assert.assertFalse(homePage.isProductHasAddToCart(product), product + " should have an description.");
+            Assert.assertFalse(homePage.isProductHasAddToCartButton(product), product + " should have an description.");
         });
     }
 
