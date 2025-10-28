@@ -124,10 +124,10 @@ public class HomePageSmokeTest extends BaseTest {
                 .loginHappyPath();
 
         var products = homePage.getProducts();
-        var productTitles = products.stream().map(homePage::getProductTitle).toList();
+        var productTitles = homePage.getProductTitles(products);
 
         var productsAfterSortZA = homePage.clickProductSortZA().getProducts();
-        var productTitlesAfterSortZA = productsAfterSortZA.stream().map(homePage::getProductTitle).toList();
+        var productTitlesAfterSortZA = homePage.getProductTitles(productsAfterSortZA);
 
         Assert.assertNotEquals(productTitles,productTitlesAfterSortZA, "Sorting from A-Z to Z-A did not work as expected.");
     }

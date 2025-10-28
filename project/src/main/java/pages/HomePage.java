@@ -80,6 +80,9 @@ public class HomePage extends BasePage<HomePage> {
         return title;
     }
 
+    public List<String> getProductTitles(List<WebElement> elements) {
+        return elements.stream().map(this::getProductTitle).toList();
+    }
     public HomePage clickProductSortContainer() {
         var container = findElementVisibility(productSortContainer);
         click(container);
