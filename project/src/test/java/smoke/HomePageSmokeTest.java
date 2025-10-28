@@ -9,6 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
+import java.util.Collections;
+import java.util.stream.Collectors;
+
 public class HomePageSmokeTest extends BaseTest {
 
 
@@ -108,5 +111,24 @@ public class HomePageSmokeTest extends BaseTest {
         var homePage = loginPage.open()
                 .loginHappyPath();
         homePage.getProducts().forEach(homePage::clickAddToCartButton);
+    }
+
+    @Test(groups = "smoke")
+    @Story("Home functionality")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Sorting from A-Z to Z-A should work as expected.")
+    public void sortingFromAZShouldBringProductsInAscendingOrder() {
+        var loginPage = new LoginPage(driver);
+
+        var homePage = loginPage.open()
+                .loginHappyPath();
+
+        var products = homePage.getProducts();
+        var productTitles = products.stream().map(homePage::getProductTitle).toList();
+
+        var productsAfterSortZA = homePage.clickProductSortZA().getProducts();
+        var productTitlesAfterSortZA = productsAfterSortZA.stream().map(homePage::getProductTitle).toList();
+
+        Assert.assertNotEquals(productTitles,productTitlesAfterSortZA, "Sorting from A-Z to Z-A did not work as expected.");
     }
 }

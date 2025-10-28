@@ -25,4 +25,6 @@ public class HomePageRegressionTest extends BaseTest {
         homePage.clickAddToCartButton(product);
         Assert.assertTrue(homePage.isProductHasRemoveFromCartButton(product), String.format("Product %s is not added to the cart.", product));
     }
+
+
 }

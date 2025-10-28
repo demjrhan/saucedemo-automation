@@ -12,10 +12,14 @@ public class HomePage extends BasePage<HomePage> {
 
     private By inventoryContainer = By.className("inventory_list");
     private By inventoryProducts = By.cssSelector(".inventory_list .inventory_item");
-    private By firstProduct = By.cssSelector(".inventory_list:nth-child(1)");
     private By addToCartButtonGeneric = By.cssSelector("[data-test*='add-to-cart']");
     private By removeFromCartButtonGeneric = By.cssSelector("[data-test*='remove']");
-    private By itemPrice = By.cssSelector("[data-test='inventory-item-price']");
+    private By productPrice = By.cssSelector("[data-test='inventory-item-price']");
+    private By productTitle = By.cssSelector("[data-test='inventory-item-name']");
+    private By productSortContainer = By.cssSelector("[data-test='product-sort-container']");
+    private By productSortAZ = By.cssSelector("[data-test='product-sort-container'] option[value='az']");
+    private By productSortZA = By.cssSelector("[data-test='product-sort-container'] option[value='za']");
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -58,12 +62,38 @@ public class HomePage extends BasePage<HomePage> {
         return findInside(element, removeFromCartButtonGeneric).isDisplayed();
     }
 
-    public void clickAddToCartButton(WebElement element) {
+    public HomePage clickAddToCartButton(WebElement element) {
         click(findInside(element, addToCartButtonGeneric));
+        return this;
     }
 
-    public String getItemPrice(WebElement product) {
-        return getTextInside(product, itemPrice);
+    public String getProductPrice(WebElement product) {
+        return getTextInside(product, productPrice);
     }
 
+    public String getProductTitle(WebElement product) {
+        var title = getTextInside(product, productTitle);
+        if (title.contains("Sauce Labs")) {
+            title = title.replace("Sauce Labs", "");
+            return title;
+        }
+        return title;
+    }
+
+    public HomePage clickProductSortContainer() {
+        var container = findElementVisibility(productSortContainer);
+        click(container);
+        return this;
+    }
+
+    public HomePage clickProductSortAZ() {
+        clickProductSortContainer();
+        click(productSortAZ);
+        return this;
+    }
+    public HomePage clickProductSortZA() {
+        clickProductSortContainer();
+        click(productSortZA);
+        return this;
+    }
 }
