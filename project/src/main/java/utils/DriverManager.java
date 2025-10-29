@@ -51,37 +51,23 @@ public final class DriverManager {
 
     private static FirefoxOptions getFirefoxOptions() {
         var options = new FirefoxOptions();
-        options.addArguments("--start-maximized",
-                "--incognito",
-                "--disable-notifications",
-                "--disable-popup-blocking",
-                "--disable-blink-features=AutomationControlled",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-logging",
-                "--disable-extensions",
-                "--disable-web-security",
-                "--silent",
-                "--log-level=3",
-                "--disable-features=PasswordLeakDetection,PasswordManagerEnabled");
+        options.addArguments(
+                "--headless",
+                "--private",
+                "--disable-notifications"
+        );
         return options;
     }
 
     private static ChromeOptions getChromeOptions() {
         var options = new ChromeOptions();
-        options.addArguments("--start-maximized",
+        options.addArguments(
+                "--headless=new",
                 "--incognito",
                 "--disable-notifications",
                 "--disable-popup-blocking",
-                "--disable-blink-features=AutomationControlled",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-logging",
-                "--disable-extensions",
-                "--disable-web-security",
-                "--silent",
-                "--log-level=3",
-                "--disable-features=PasswordLeakDetection,PasswordManagerEnabled");
+                "--disable-gpu"
+        );
         return options;
     }
 
