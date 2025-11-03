@@ -51,8 +51,15 @@ public final class DriverManager {
 
     private static FirefoxOptions getFirefoxOptions() {
         var options = new FirefoxOptions();
+        
+        String headlessEnv = System.getProperty("headless", System.getenv("HEADLESS"));
+        boolean isCI = System.getenv("CI") != null || "true".equalsIgnoreCase(headlessEnv);
+        
+        if (isCI) {
+            options.addArguments("--headless");
+        }
+        
         options.addArguments(
-                "--headless",
                 "--private",
                 "--disable-notifications"
         );
@@ -61,8 +68,16 @@ public final class DriverManager {
 
     private static ChromeOptions getChromeOptions() {
         var options = new ChromeOptions();
+        
+        // Only run headless in CI (GitHub Actions) or if explicitly set
+        String headlessEnv = System.getProperty("headless", System.getenv("HEADLESS"));
+        boolean isCI = System.getenv("CI") != null || "true".equalsIgnoreCase(headlessEnv);
+        
+        if (isCI) {
+            options.addArguments("--headless=new");
+        }
+        
         options.addArguments(
-                "--headless=new",
                 "--incognito",
                 "--disable-notifications",
                 "--disable-popup-blocking",
