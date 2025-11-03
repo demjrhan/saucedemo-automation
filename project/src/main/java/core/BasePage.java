@@ -141,7 +141,7 @@ public abstract class BasePage<T extends BasePage<T>> {
     }
 
     protected WebElement findInside(WebElement parent, By childLocator) {
-        return wait.until(_ -> parent.findElement(childLocator));
+        return wait.until(driver -> parent.findElement(childLocator));
     }
 
     protected boolean isEmpty(By locator) {
