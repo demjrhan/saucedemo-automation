@@ -144,6 +144,15 @@ public abstract class BasePage<T extends BasePage<T>> {
         return wait.until(driver -> parent.findElement(childLocator));
     }
 
+    protected boolean existsInside(WebElement parent, By childLocator) {
+        try {
+            parent.findElement(childLocator);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
     protected boolean isEmpty(By locator) {
         WebElement el = findElementVisibility(locator);
         String value = el.getTagName().equalsIgnoreCase("input") || el.getTagName().equalsIgnoreCase("textarea")

@@ -60,6 +60,7 @@ public final class DriverManager {
         }
         
         options.addArguments(
+                //"--headless",
                 "--private",
                 "--disable-notifications"
         );
@@ -78,6 +79,7 @@ public final class DriverManager {
         }
         
         options.addArguments(
+                //"--headless=new",
                 "--incognito",
                 "--disable-notifications",
                 "--disable-popup-blocking",

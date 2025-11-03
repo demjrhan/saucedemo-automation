@@ -18,12 +18,15 @@ public class LoginPositiveTest extends BaseTest {
     @Description("Correct password doesn't create error message.")
     public void correctPasswordDoesntCauseError() {
         var loginPage = new LoginPage(driver);
+        
+        // Open login page and enter correct password only (no username)
         var result = loginPage.open()
                 .writePassword(loginPage.getCorrectPassword())
                 .clickLoginButtonRaw()
                 .getErrorMessage();
 
-        Assert.assertFalse(result.contains("password"), "Error message should not be empty.");
+        // Verify error message doesn't mention password (username error is expected)
+        Assert.assertFalse(result.contains("password"), "Error message should not contain 'password'.");
     }
 
     @Test(groups = "positive")
@@ -32,12 +35,15 @@ public class LoginPositiveTest extends BaseTest {
     @Description("Correct username doesn't create error message.")
     public void correctUsernameDoesntCauseError() {
         var loginPage = new LoginPage(driver);
+        
+        // Open login page and enter correct username only (no password)
         var result = loginPage.open()
                 .writeUsername(loginPage.getRandomCorrectUsername())
                 .clickLoginButtonRaw()
                 .getErrorMessage();
 
-        Assert.assertFalse(result.contains("username"), "Error message should not be empty.");
+        // Verify error message doesn't mention username (password error is expected)
+        Assert.assertFalse(result.contains("username"), "Error message should not contain 'username'.");
     }
 
     @Test(groups = "positive")
@@ -46,11 +52,14 @@ public class LoginPositiveTest extends BaseTest {
     @Description("Correct username and password logins correctly.")
     public void correctPasswordAndCorrectUsernameLogins(){
         var loginPage = new LoginPage(driver);
+        
+        // Login with correct username and password
         var result = loginPage.open()
                 .writeUsername(loginPage.getRandomCorrectUsername())
                 .writePassword(loginPage.getCorrectPassword())
                 .clickLoginButtonExpectingSuccess();
 
+        // Verify user is redirected to home page
         Assert.assertTrue(result.atHomePage(), "Should be in home page.");
     }
 
@@ -61,11 +70,14 @@ public class LoginPositiveTest extends BaseTest {
     @Description("Correct username and password from data provider should work correctly.")
     public void correctUsernameAndPasswordFromDataProvider(String username, String password){
         var loginPage = new LoginPage(driver);
+        
+        // Login with credentials from data provider (tests all valid usernames)
         var result = loginPage.open()
                 .writeUsername(username)
                 .writePassword(password)
                 .clickLoginButtonExpectingSuccess();
 
+        // Verify user is redirected to home page for all valid credentials
         Assert.assertTrue(result.atHomePage(), "Should be in home page.");
     }
 }

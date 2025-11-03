@@ -19,6 +19,10 @@ public class HomePage extends BasePage<HomePage> {
     private By productSortContainer = By.cssSelector("[data-test='product-sort-container']");
     private By productSortAZ = By.cssSelector("[data-test='product-sort-container'] option[value='az']");
     private By productSortZA = By.cssSelector("[data-test='product-sort-container'] option[value='za']");
+    private By productSortPriceLowHigh = By.cssSelector("[data-test='product-sort-container'] option[value='lohi']");
+    private By productSortPriceHighLow = By.cssSelector("[data-test='product-sort-container'] option[value='hilo']");
+    private By cartBadge = By.cssSelector("[data-test='shopping-cart-badge']");
+    private By cartIcon = By.cssSelector("[data-test='shopping-cart-link']");
 
 
     public HomePage(WebDriver driver) {
@@ -36,19 +40,22 @@ public class HomePage extends BasePage<HomePage> {
     public WebElement getFirstProduct() {
         return findElementsPresence(inventoryProducts).getFirst();
     }
+    public WebElement getSecondProduct() {
+        return findElementsPresence(inventoryProducts).get(1);
+    }
 
-    public WebElement getRandomProduct() {
+        public WebElement getRandomProduct() {
         var products = getProducts();
         Random random = new Random();
         return products.get(random.nextInt(products.size()));
     }
 
     public boolean productHasImage(WebElement product) {
-        return findInside(product, By.tagName("img")).isDisplayed();
+        return existsInside(product, By.tagName("img"));
     }
 
     public boolean productHasDescription(WebElement product) {
-        return findInside(product, By.cssSelector("[data-test='inventory-item-desc']")).isDisplayed();
+        return existsInside(product, By.cssSelector("[data-test='inventory-item-desc']"));
     }
 
     public String getProductDescription(WebElement product) {
@@ -56,10 +63,10 @@ public class HomePage extends BasePage<HomePage> {
     }
 
     public boolean isProductHasAddToCartButton(WebElement element) {
-        return findInside(element, addToCartButtonGeneric).isDisplayed();
+        return existsInside(element, addToCartButtonGeneric);
     }
     public boolean isProductHasRemoveFromCartButton(WebElement element) {
-        return findInside(element, removeFromCartButtonGeneric).isDisplayed();
+        return existsInside(element, removeFromCartButtonGeneric);
     }
 
     public HomePage clickAddToCartButton(WebElement element) {
@@ -97,6 +104,48 @@ public class HomePage extends BasePage<HomePage> {
     public HomePage clickProductSortZA() {
         clickProductSortContainer();
         click(productSortZA);
+        return this;
+    }
+    
+    public HomePage clickProductSortPriceLowHigh() {
+        clickProductSortContainer();
+        click(productSortPriceLowHigh);
+        return this;
+    }
+    
+    public HomePage clickProductSortPriceHighLow() {
+        clickProductSortContainer();
+        click(productSortPriceHighLow);
+        return this;
+    }
+    
+    public List<String> getProductPrices(List<WebElement> products) {
+        return products.stream().map(this::getProductPrice).toList();
+    }
+    
+    public double parsePrice(String priceText) {
+        return Double.parseDouble(priceText.replace("$", ""));
+    }
+    
+    public String getCartBadgeCount() {
+        return getText(cartBadge);
+    }
+    
+    public boolean hasCartBadge() {
+        try {
+            return findElementVisibility(cartBadge).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    public HomePage clickCartIcon() {
+        click(cartIcon);
+        return this;
+    }
+    
+    public HomePage clickRemoveFromCartButton(WebElement product) {
+        click(findInside(product, removeFromCartButtonGeneric));
         return this;
     }
 }
