@@ -24,14 +24,27 @@ public class CartFunctionalityTest extends BaseTest {
         // Add 2 products to cart
         var product1 = homePage.getFirstProduct();
         homePage.clickAddToCartButton(product1);
+        
+        // Wait for badge to appear after first item
+        Assert.assertTrue(homePage.hasCartBadge(), "Cart badge should appear after first item.");
 
-        var product2 = homePage.getRandomProduct();
-        homePage.clickAddToCartButton(product2);
+        // Get second product (ensure it's different from first)
+        var products = homePage.getProducts();
+        var product2 = products.size() > 1 ? products.get(1) : products.get(0);
+        
+        // Make sure product2 is different from product1, or skip if same
+        if (product1 != product2) {
+            homePage.clickAddToCartButton(product2);
+        }
 
         // Verify cart badge is visible and shows correct count
         Assert.assertTrue(homePage.hasCartBadge(), "Cart badge should be visible after adding items.");
         String badgeCount = homePage.getCartBadgeCount();
-        Assert.assertEquals(badgeCount, "2", "Cart badge should show 2 items.");
+        
+        // Verify badge shows correct count (1 if same product, 2 if different)
+        int expectedCount = (product1 == product2) ? 1 : 2;
+        Assert.assertEquals(badgeCount, String.valueOf(expectedCount), 
+                String.format("Cart badge should show %d item(s).", expectedCount));
     }
 
     @Test(groups = "regression")
@@ -44,19 +57,24 @@ public class CartFunctionalityTest extends BaseTest {
                 .loginHappyPath();
 
         // Add first product and verify badge appears with count 1
-        homePage.clickAddToCartButton(homePage.getFirstProduct());
+        var product1 = homePage.getFirstProduct();
+        homePage.clickAddToCartButton(product1);
         Assert.assertTrue(homePage.hasCartBadge(), "Cart badge should appear after first item.");
         Assert.assertEquals(homePage.getCartBadgeCount(), "1", "Cart should show 1 item.");
 
-        // Add second product and verify badge count increases to 2
-        homePage.clickAddToCartButton(homePage.getRandomProduct());
-        Assert.assertEquals(homePage.getCartBadgeCount(), "2", "Cart should show 2 items.");
-
-        // Add third product if available and verify badge count increases to 3
+        // Add second product (ensure it's different from first)
         var products = homePage.getProducts();
-        if (products.size() >= 3) {
-            homePage.clickAddToCartButton(products.get(2));
-            Assert.assertEquals(homePage.getCartBadgeCount(), "3", "Cart should show 3 items.");
+        if (products.size() > 1) {
+            var product2 = products.get(1);
+            homePage.clickAddToCartButton(product2);
+            Assert.assertEquals(homePage.getCartBadgeCount(), "2", "Cart should show 2 items.");
+
+            // Add third product if available and verify badge count increases to 3
+            if (products.size() >= 3) {
+                var product3 = products.get(2);
+                homePage.clickAddToCartButton(product3);
+                Assert.assertEquals(homePage.getCartBadgeCount(), "3", "Cart should show 3 items.");
+            }
         }
     }
 

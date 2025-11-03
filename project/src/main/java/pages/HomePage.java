@@ -128,6 +128,8 @@ public class HomePage extends BasePage<HomePage> {
     }
     
     public String getCartBadgeCount() {
+        // Wait for badge to be visible before getting text
+        waitUntilElementVisibility(cartBadge);
         return getText(cartBadge);
     }
     

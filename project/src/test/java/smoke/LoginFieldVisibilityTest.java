@@ -65,7 +65,7 @@ public class LoginFieldVisibilityTest extends BaseTest {
         
         // Open login page and get list of valid usernames from page
         var result = loginPage.open()
-                .getCorrectUsernames();
+                .getAcceptedUsernames();
 
         // Verify at least one valid username is available
         Assert.assertFalse(result.isEmpty(), "Accepted usernames should not be empty.");

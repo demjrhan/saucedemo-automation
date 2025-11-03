@@ -3,12 +3,10 @@ package pages;
 import core.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import utils.CredentialsUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class LoginPage extends BasePage<LoginPage> {
 
@@ -31,17 +29,13 @@ public class LoginPage extends BasePage<LoginPage> {
         return this;
     }
 
-    /* Split and skip first element is because of dom structure.
-     * First element is `Accepted usernames are:` text */
-    public String getRandomCorrectUsername() {
-        var usernames = getText(loginCredentials);
-        Random rand = new Random();
-        String[] usernamesSplit = usernames.split("\n");
-        var usernameIndex = rand.nextInt(usernamesSplit.length - 1) + 1;
-        return usernamesSplit[usernameIndex];
+    public LoginPage refresh() {
+        super.refresh();
+        return this;
     }
 
-    public List<String> getCorrectUsernames() {
+
+    public List<String> getAcceptedUsernames() {
         var usernames = getText(loginCredentials);
         var usernamesSplit = usernames.split("\n");
         return Arrays.stream(usernamesSplit)
@@ -57,11 +51,6 @@ public class LoginPage extends BasePage<LoginPage> {
 
     public String getRandomCredential(int length) {
         return CredentialsUtils.getPassword(length);
-    }
-
-    public String getRandomCorrectUsernameUPPERCASE() {
-        var correctUsername = getRandomCorrectUsername();
-        return correctUsername.toUpperCase();
     }
 
     /* Split and last element access is because of dom structure.
